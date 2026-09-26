@@ -57,43 +57,43 @@ class EmployeeDatabaseCRUD:
         print(f"{row[0]:<10}|{row[1]:<15}|{row[2]:<5}|{row[3]:<15}|{row[4]:<10.2f}")
       print('='*68) 
       
-def updateEmployee(self,empId:str,newAge:str,newDept:str,newSalary:str):
-  with sqlite3.connect(self.db_name) as conn:
-    cursor=conn.cursor()
-    
-    cursor.execute("SELECT name,age,dapartment,salary FROM employees WHERE id=?",(empId,))
-    current=cursor.fetchone()
-    
-    if not current:
-      print(f"Error:Employee with employee ID '{empId}' not found.")
-      return False
-    name=new_name if new_name else current[0]
-    age=int(newAge)if newAge else current[1]
-    department=newDept if newDept else current[2]
-    salary=float(newSalary)if newSalary else current[3]
-    
-    cursor.execute("""
-                   UPDATE employees
-                   SET name=?,age=?,separtment=?,salary=?
-                   WHERE id=?
-                   """,(name,age,department,salary,empId))
-    conn.commit()
-    
-  print(f"Employee ID '{empId}' updated successfully!")
-  return True
+  def updateEmployee(self,empId:str,newAge:str,newDept:str,newSalary:str):
+    with sqlite3.connect(self.dbName) as conn:
+      cursor=conn.cursor()
+      
+      cursor.execute("SELECT name,age,dapartment,salary FROM employees WHERE id=?",(empId,))
+      current=cursor.fetchone()
+      
+      if not current:
+        print(f"Error:Employee with employee ID '{empId}' not found.")
+        return False
+      name=newName if newName else current[0]
+      age=int(newAge)if newAge else current[1]
+      department=newDept if newDept else current[2]
+      salary=float(newSalary)if newSalary else current[3]
+      
+      cursor.execute("""
+                    UPDATE employees
+                    SET name=?,age=?,department=?,salary=?
+                    WHERE id=?
+                    """,(name,age,department,salary,empId))
+      conn.commit()
+      
+    print(f"Employee ID '{empId}' updated successfully!")
+    return True
 
-def deleteEmployee(self,emp_id:str):
-  with sqlite3.connect(self.db_name)as conn:
-    cursor=conn.cursor()
-    cursor.execute("SELECT id FROM employees WHERE id=?",(emp_id,))
-    if not cursor.fetchone():
-      print(f"Error:Employee with empoyee id '{emp_id}' not found.")
-      return False
-    
-    cursor.execute("DELETE FROM employees WHERE id=?",(emp_id,))
-    conn.commit()
-  print(f"->Employee ID '{emp_id}' deleted successfully!")
-  return True
+  def deleteEmployee(self,emp_id:str):
+    with sqlite3.connect(self.dbName)as conn:
+      cursor=conn.cursor()
+      cursor.execute("SELECT id FROM employees WHERE id=?",(emp_id,))
+      if not cursor.fetchone():
+        print(f"Error:Employee with empoyee id '{emp_id}' not found.")
+        return False
+      
+      cursor.execute("DELETE FROM employees WHERE id=?",(emp_id,))
+      conn.commit()
+    print(f"->Employee ID '{emp_id}' deleted successfully!")
+    return True
 
 def main():
   dbManager=EmployeeDatabaseCRUD("employee1.db")
@@ -121,7 +121,7 @@ def main():
       
       dept=input("Enter the department:").strip()
       dbManager.createEmployee(empID,name,age,dept,salary)
-      dbManager.createEmployee(empID,name,age,dept,salary)
+      
       
     elif choice=='2':
       dbManager.readEmployees()
@@ -133,12 +133,12 @@ def main():
       age=input("Enter the new age:").strip()
       dept=input("Enter the new department:").strip()
       salary=input("Enter the new salary:").strip()
-      dbManager.update_employee(empID,name,age,dept,salary)
+      dbManager.updateEmployee(empID,name,age,dept,salary)
       
     elif choice=='4':
       print("\n--Delete Employee Record--")
       empID=input("Enter Employee ID to be deleted:").strip()
-      dbManager.delete_employee(empID)
+      dbManager.deleteEmployee(empID)
       
     elif choice=='5':
       print("\n Exiting program....")

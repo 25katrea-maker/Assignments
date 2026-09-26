@@ -40,7 +40,7 @@ class EmployeeCRUD:
     return True
    
   def readEmployees(self):
-    if not os.path.exists(self,filename):
+    if not os.path.exists(self.filename):
       print("No employee records found")
       return
     
@@ -53,7 +53,8 @@ class EmployeeCRUD:
         return
       
       print("\n"+"="*65)
-      print(f"{'ID':<10}|{'Name':<15}|{'Age':<5}|{'Department':<15}|{'Salary':<10}")
+      for row in rows:
+        print(f"{'ID':<10}|{'Name':<15}|{'Age':<5}|{'Department':<15}|{'Salary':<10}")
       print("-"*65)
       
   def updateEmployee(self,empId:str,newName:str,newAge:str,newDept:str,newSalary:str):
@@ -80,25 +81,25 @@ class EmployeeCRUD:
     print(f"->Employee ID '{empId}' updated successfully!")      
     return True
   
-def deleteEmployee(self,empId:str):
-  if not self._find_employee_row(empId):
-    print(f"Error:Employee with ID '{empId}' not found")
-    return False
-  
-  rows=[]
-  with open(self.filename,mode='r',newline='') as file:
-    reader=csv.DictReader(file)
-    rows=list(reader)
+  def deleteEmployee(self,empId:str):
+    if not self.findEmployeeRow(empId):
+      print(f"Error:Employee with ID '{empId}' not found")
+      return False
     
-  updatedRow=[row for row in rows if row['id']!=empId]
-  
-  with open(self.filename,mode='w',newline='')as file:
-    writer=csv.DictWriter(file,fieldnames=self.fieldnames)
-    writer=writeheader()
-    writer.writerows(updatedRow)
+    rows=[]
+    with open(self.filename,mode='r',newline='') as file:
+      reader=csv.DictReader(file)
+      rows=list(reader)
+      
+    updatedRow=[row for row in rows if row['id']!=empId]
     
-    print(f"Employee ID '{empId}' deleted successfully!")
-    return True
+    with open(self.filename,mode='w',newline='')as file:
+      writer=csv.DictWriter(file,fieldnames=self.fieldnames)
+      writer.writeheader()
+      writer.writerows(updatedRow)
+      
+      print(f"Employee ID '{empId}' deleted successfully!")
+      return True
   
 def main():
   manager=EmployeeCRUD("employees.csv")
