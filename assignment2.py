@@ -130,7 +130,7 @@ def main():
     elif choice=='3':
       print('\n--Update Employee Record--')
       emp_id=input('Please enter Employee ID to update:').strip()
-      name=input('Enter new Age:').strip()
+      name=input('Enter new name:').strip()
       age=input('Enter new Age:').strip()
       dept=input('Enter new Department:').strip()
       salary=input('Enter new Salary:').strip()
